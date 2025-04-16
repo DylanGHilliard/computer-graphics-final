@@ -90,15 +90,28 @@ int main(int argc, char* argv[])
     grassShader.UnUse();
     /// END OF SHADER
 
+    Canis::Shader brickShader;
+    brickShader.Compile("assets/shaders/hello_shader.vs", "assets/shaders/hello_shader.fs");
+    brickShader.AddAttribute("aPosition");
+    brickShader.Link();
+    brickShader.Use();
+    brickShader.SetInt("MATERIAL.diffuse", 0);
+    brickShader.SetInt("MATERIAL.specular", 1);
+    brickShader.SetFloat("MATERIAL.shininess", 32);
+    brickShader.SetBool("WIND", false);
+    brickShader.UnUse();
+
     /// Load Image
     Canis::GLTexture glassTexture = Canis::LoadImageGL("assets/textures/glass.png", true);
     Canis::GLTexture grassTexture = Canis::LoadImageGL("assets/textures/grass.png", false);
     Canis::GLTexture textureSpecular = Canis::LoadImageGL("assets/textures/container2_specular.png", true);
+    Canis::GLTexture brickTexture = Canis::LoadImageGL("assets/textures/bricks.png", true);
     /// End of Image Loading
 
     /// Load Models
     Canis::Model cubeModel = Canis::LoadModel("assets/models/cube.obj");
     Canis::Model grassModel = Canis::LoadModel("assets/models/plants.obj");
+    
     /// END OF LOADING MODEL
 
     // Load Map into 3d array
@@ -133,6 +146,15 @@ int main(int argc, char* argv[])
                     entity.shader = &grassShader;
                     entity.transform.position = vec3(x + 0.0f, y + 0.0f, z + 0.0f);
                     entity.Update = &Rotate;
+                    world.Spawn(entity);
+                    break;
+                case 3:
+                    entity.tag = "bricks";
+                    entity.albedo = &brickTexture;
+                    entity.specular = &textureSpecular;
+                    entity.model = &cubeModel;
+                    entity.shader = &brickShader;
+                    entity.transform.position = vec3(x + 0.0f, y + 0.0f, z + 0.0f);
                     world.Spawn(entity);
                     break;
                 default:
