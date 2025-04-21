@@ -100,12 +100,48 @@ int main(int argc, char* argv[])
     brickShader.SetFloat("MATERIAL.shininess", 32);
     brickShader.SetBool("WIND", false);
     brickShader.UnUse();
+    
+    Canis::Shader logShader;
+    logShader.Compile("assets/shaders/hello_shader.vs", "assets/shaders/hello_shader.fs");
+    logShader.AddAttribute("aPosition");
+    logShader.Link();
+    logShader.Use();
+    logShader.SetInt("MATERIAL.diffuse", 0);
+    logShader.SetInt("MATERIAL.specular", 1);
+    logShader.SetFloat("MATERIAL.shininess", 32);
+    logShader.SetBool("WIND", false);
+    logShader.UnUse();
+
+    Canis::Shader plankShader;
+    plankShader.Compile("assets/shaders/hello_shader.vs", "assets/shaders/hello_shader.fs");
+    plankShader.AddAttribute("aPosition");
+    plankShader.Link();
+    plankShader.Use();
+    plankShader.SetInt("MATERIAL.diffuse", 0);
+    plankShader.SetInt("MATERIAL.specular", 1);
+    plankShader.SetFloat("MATERIAL.shininess", 64);
+    plankShader.SetBool("WIND", false);
+    plankShader.UnUse();
+
+    Canis::Shader grassBlockShader;
+    grassBlockShader.Compile("assets/shaders/hello_shader.vs", "assets/shaders/hello_shader.fs");
+    grassBlockShader.AddAttribute("aPosition");
+    grassBlockShader.Link();
+    grassBlockShader.Use();
+    grassBlockShader.SetInt("MATERIAL.diffuse", 0);
+    grassBlockShader.SetInt("MATERIAL.specular", 1);
+    grassBlockShader.SetFloat("MATERIAL.shininess", 32);
+    grassBlockShader.SetBool("WIND", false);
+    grassBlockShader.UnUse();
 
     /// Load Image
     Canis::GLTexture glassTexture = Canis::LoadImageGL("assets/textures/glass.png", true);
     Canis::GLTexture grassTexture = Canis::LoadImageGL("assets/textures/grass.png", false);
     Canis::GLTexture textureSpecular = Canis::LoadImageGL("assets/textures/container2_specular.png", true);
     Canis::GLTexture brickTexture = Canis::LoadImageGL("assets/textures/bricks.png", true);
+    Canis::GLTexture logTexture = Canis::LoadImageGL("assets/textures/oak_log.png", true);
+    Canis::GLTexture plankTexture = Canis::LoadImageGL("assets/textures/oak_planks.png", true);
+    Canis::GLTexture grassBlockTexture = Canis::LoadImageGL("assets/textures/grass_block_top.png", true);
     /// End of Image Loading
 
     /// Load Models
@@ -147,6 +183,7 @@ int main(int argc, char* argv[])
                     entity.transform.position = vec3(x + 0.0f, y + 0.0f, z + 0.0f);
                     entity.Update = &Rotate;
                     world.Spawn(entity);
+
                     break;
                 case 3:
                     entity.tag = "bricks";
@@ -156,6 +193,53 @@ int main(int argc, char* argv[])
                     entity.shader = &brickShader;
                     entity.transform.position = vec3(x + 0.0f, y + 0.0f, z + 0.0f);
                     world.Spawn(entity);
+                    break;
+                case 4:
+                    entity.tag = "oak_log";
+                    entity.albedo = &logTexture;
+                    entity.specular = &textureSpecular;
+                    entity.model = &cubeModel;
+                    entity.shader = &logShader;
+                    entity.transform.position = vec3(x + 0.0f, y + 0.0f, z + 0.0f);
+                    world.Spawn(entity);
+                    break;
+                case 5:    
+                    entity.tag = "oak_plank";
+                    entity.albedo = &plankTexture;
+                    entity.specular = &textureSpecular;
+                    entity.model = &cubeModel;
+                    entity.shader = &plankShader;
+                    entity.transform.position = vec3(x + 0.0f, y + 0.0f, z + 0.0f);
+                    world.Spawn(entity);
+                    break;
+                case 6:    
+                    entity.tag = "grass_block";
+                    entity.albedo = &grassBlockTexture;
+                    entity.specular = &textureSpecular;
+                    entity.model = &cubeModel;
+                    entity.shader = &grassBlockShader;
+                    entity.transform.position = vec3(x + 0.0f, y + 0.0f, z + 0.0f);
+                    world.Spawn(entity);
+                    // Checks if the block above is empty
+                    if (map[y+1][x][z] == 0){
+                        auto now = std::chrono::system_clock::now();
+                        auto duration = now.time_since_epoch();
+                        auto millis = std::chrono:: duration_cast<std::chrono::milliseconds>(duration).count();
+                        srand(static_cast<unsigned int>(millis+ x+ y+z));
+                        int randVal = rand() % 3;
+                        // Creates Grass On top of the block at a 50% rate
+                        if (randVal == 1){
+                            entity.tag = "grass";
+                            entity.albedo = &grassTexture;
+                            entity.specular = &textureSpecular;
+                            entity.model = &grassModel;
+                            entity.shader = &grassShader;
+                            entity.transform.position = vec3(x + 0.0f, y + 1.0f, z + 0.0f);
+                            entity.Update = &Rotate;
+                            world.Spawn(entity);
+                        }
+
+                    }
                     break;
                 default:
                     break;
@@ -247,18 +331,24 @@ void SpawnLights(Canis::World &_world)
 
     _world.SpawnPointLight(pointLight);
 
-    pointLight.position = vec3(0.0f, 0.0f, 1.0f);
-    pointLight.ambient = vec3(4.0f, 0.0f, 0.0f);
-
+    pointLight.position = vec3(-2.0f, -2.0f, -1.0f);
+    _world.SpawnPointLight(pointLight);
+        
+    pointLight.position = vec3(-2.0f);
     _world.SpawnPointLight(pointLight);
 
-    pointLight.position = vec3(-2.0f);
-    pointLight.ambient = vec3(0.0f, 4.0f, 0.0f);
+    pointLight.position = vec3(10.0f,4.0f,8.0f);
+    pointLight.ambient = vec3(0.5f);
+    _world.SpawnPointLight(pointLight);
 
+    pointLight.position = vec3(1.0f,5.0f, 1.0f);
     _world.SpawnPointLight(pointLight);
 
     pointLight.position = vec3(2.0f);
-    pointLight.ambient = vec3(0.0f, 0.0f, 4.0f);
-
     _world.SpawnPointLight(pointLight);
+
+    pointLight.position = vec3(2.0f);
+    _world.SpawnPointLight(pointLight);
+
+    
 }
