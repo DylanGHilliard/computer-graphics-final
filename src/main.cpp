@@ -150,9 +150,23 @@ int main(int argc, char* argv[])
     fireShader.SetInt("FIREANIMATION.fireTexture4", 5);
     fireShader.UnUse();
 
+    
+    Canis::Shader flowerShader;
+    flowerShader.Compile("assets/shaders/hello_shader.vs", "assets/shaders/hello_shader.fs");
+    flowerShader.AddAttribute("aPosition");
+    flowerShader.Link();
+    flowerShader.Use();
+    flowerShader.SetInt("MATERIAL.diffuse", 0);
+    flowerShader.SetInt("MATERIAL.specular", 1);
+    flowerShader.SetFloat("MATERIAL.shininess", 64);
+    flowerShader.SetBool("WIND", true);
+    flowerShader.SetFloat("WINDEFFECT", 0.2);
+    flowerShader.UnUse();
+
     /// Load Image
     Canis::GLTexture glassTexture = Canis::LoadImageGL("assets/textures/glass.png", true);
     Canis::GLTexture grassTexture = Canis::LoadImageGL("assets/textures/grass.png", false);
+    Canis::GLTexture flowerTexture= Canis::LoadImageGL("assets/textures/blue_orchid.png", false);
     Canis::GLTexture textureSpecular = Canis::LoadImageGL("assets/textures/container2_specular.png", true);
     Canis::GLTexture brickTexture = Canis::LoadImageGL("assets/textures/bricks.png", true);
     Canis::GLTexture logTexture = Canis::LoadImageGL("assets/textures/oak_log.png", true);
@@ -247,14 +261,24 @@ int main(int argc, char* argv[])
                         auto duration = now.time_since_epoch();
                         auto millis = std::chrono:: duration_cast<std::chrono::milliseconds>(duration).count();
                         srand(static_cast<unsigned int>(millis+ x+ y+z));
-                        int randVal = rand() % 3;
+                        int randVal = rand() % 10;
                         // Creates Grass On top of the block at a 50% rate
-                        if (randVal == 1){
+                        if (randVal == 1 || randVal == 2 || randVal == 3 ){
                             entity.tag = "grass";
                             entity.albedo = &grassTexture;
                             entity.specular = &textureSpecular;
                             entity.model = &grassModel;
                             entity.shader = &grassShader;
+                            entity.transform.position = vec3(x + 0.0f, y + 1.0f, z + 0.0f);
+                            entity.Update = &Rotate;
+                            world.Spawn(entity);
+                        }
+                        if (randVal == 4){
+                            entity.tag = "flower";
+                            entity.albedo = &flowerTexture;
+                            entity.specular = &textureSpecular;
+                            entity.model = &grassModel;
+                            entity.shader = &flowerShader;
                             entity.transform.position = vec3(x + 0.0f, y + 1.0f, z + 0.0f);
                             entity.Update = &Rotate;
                             world.Spawn(entity);
