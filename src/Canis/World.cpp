@@ -62,7 +62,7 @@ namespace Canis
         {
             if (m_entities[i].active == false)
                 continue;
-
+            
             Shader *shader = m_entities[i].shader;
             shader->Use();
             shader->SetVec3("COLOR", m_entities[i].color);
@@ -72,6 +72,18 @@ namespace Canis
 
             UpdateLights(*shader);
 
+            //Fire Animation
+            if(m_entities[i].tag == "fire")
+            {
+                for(int j = 0; j < m_entities[i].animationTextures.size(); j++)
+                {
+                    
+                    glActiveTexture(GL_TEXTURE0 +j+2);
+                    glBindTexture(GL_TEXTURE_2D, m_entities[i].animationTextures[j].id);
+                }
+            }
+            //End of Fire Animation
+            
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, m_entities[i].albedo->id);
             glActiveTexture(GL_TEXTURE1);
@@ -192,5 +204,17 @@ namespace Canis
 
         if (m_inputManager->JustPressedKey(SDLK_ESCAPE))
             m_window->MouseLock(!m_window->GetMouseLock());
+    }
+    void World::UpdateFire(Canis::Entity &_entity, double _deltaTime)
+    {
+        _entity.lifeTime += _deltaTime;
+        if (_entity.lifeTime >= _entity.animationSpeed)
+        {
+            Canis::GLTexture texture = _entity.animationTextures.front();
+            _entity.animationTextures.pop_front();
+            _entity.albedo = &texture;
+            _entity.animationTextures.push_back(texture);
+            _entity.lifeTime = 0.0f;
+        }
     }
 }

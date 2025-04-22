@@ -4,6 +4,8 @@
 #include "Shader.hpp"
 #include "Data/Transform.hpp"
 #include "Data/GLTexture.hpp"
+#include <deque>
+
 
 namespace Canis
 {
@@ -11,6 +13,7 @@ namespace Canis
 
     struct Entity
     {
+        float lifeTime = 0.0f;
         bool active = true;
         std::string name;
         std::string tag;
@@ -19,6 +22,8 @@ namespace Canis
         Shader *shader;
         glm::vec3 color = glm::vec3(1.0f);
         GLTexture *albedo;
+        std::deque<GLTexture> animationTextures;
+        float animationSpeed;
         GLTexture *specular;
         void (*Update)(World &_world, Entity &_entity, float _deltaTime) = nullptr;
     };

@@ -40,5 +40,6 @@ namespace Canis
 
         void UpdateLights(Canis::Shader &_shader);
         void UpdateCameraMovement(double _deltaTime);
+        void UpdateFire( Canis::Entity &_entity,double _deltaTime);
     };
 }

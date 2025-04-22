@@ -134,6 +134,22 @@ int main(int argc, char* argv[])
     grassBlockShader.SetBool("WIND", false);
     grassBlockShader.UnUse();
 
+    Canis::Shader fireShader;
+    fireShader.Compile("assets/shaders/fire_shader.vs", "assets/shaders/fire_shader.fs");
+    fireShader.AddAttribute("aPosition");
+    fireShader.Link();
+    fireShader.Use();
+    fireShader.SetInt("MATERIAL.diffuse", 0);
+    fireShader.SetInt("MATERIAL.specular", 1);
+    fireShader.SetFloat("MATERIAL.shininess", 64);
+    fireShader.SetBool("WIND", false);
+    fireShader.SetFloat("ANIMATION_SPEED", 2.0f);
+    fireShader.SetInt("FIREANIMATION.fireTexture1", 2);
+    fireShader.SetInt("FIREANIMATION.fireTexture2", 3);
+    fireShader.SetInt("FIREANIMATION.fireTexture3", 4);
+    fireShader.SetInt("FIREANIMATION.fireTexture4", 5);
+    fireShader.UnUse();
+
     /// Load Image
     Canis::GLTexture glassTexture = Canis::LoadImageGL("assets/textures/glass.png", true);
     Canis::GLTexture grassTexture = Canis::LoadImageGL("assets/textures/grass.png", false);
@@ -142,11 +158,16 @@ int main(int argc, char* argv[])
     Canis::GLTexture logTexture = Canis::LoadImageGL("assets/textures/oak_log.png", true);
     Canis::GLTexture plankTexture = Canis::LoadImageGL("assets/textures/oak_planks.png", true);
     Canis::GLTexture grassBlockTexture = Canis::LoadImageGL("assets/textures/grass_block_top.png", true);
+    Canis::GLTexture fireTexture1 = Canis::LoadImageGL("assets/textures/fire_textures/fire_1.png", true);
+    Canis::GLTexture fireTexture2 = Canis::LoadImageGL("assets/textures/fire_textures/fire_2.png", true);
+    Canis::GLTexture fireTexture3 = Canis::LoadImageGL("assets/textures/fire_textures/fire_3.png", true);
+    Canis::GLTexture fireTexture4 = Canis::LoadImageGL("assets/textures/fire_textures/fire_4.png", true);
     /// End of Image Loading
 
     /// Load Models
     Canis::Model cubeModel = Canis::LoadModel("assets/models/cube.obj");
     Canis::Model grassModel = Canis::LoadModel("assets/models/plants.obj");
+    Canis::Model fireModel = Canis::LoadModel("assets/models/fire.obj");
     
     /// END OF LOADING MODEL
 
@@ -185,7 +206,7 @@ int main(int argc, char* argv[])
                     world.Spawn(entity);
 
                     break;
-                case 3:
+                case 3: // Place Bricks Block
                     entity.tag = "bricks";
                     entity.albedo = &brickTexture;
                     entity.specular = &textureSpecular;
@@ -194,7 +215,7 @@ int main(int argc, char* argv[])
                     entity.transform.position = vec3(x + 0.0f, y + 0.0f, z + 0.0f);
                     world.Spawn(entity);
                     break;
-                case 4:
+                case 4: // Place Oak Log
                     entity.tag = "oak_log";
                     entity.albedo = &logTexture;
                     entity.specular = &textureSpecular;
@@ -203,7 +224,7 @@ int main(int argc, char* argv[])
                     entity.transform.position = vec3(x + 0.0f, y + 0.0f, z + 0.0f);
                     world.Spawn(entity);
                     break;
-                case 5:    
+                case 5:     // Place Oak Planks
                     entity.tag = "oak_plank";
                     entity.albedo = &plankTexture;
                     entity.specular = &textureSpecular;
@@ -212,7 +233,7 @@ int main(int argc, char* argv[])
                     entity.transform.position = vec3(x + 0.0f, y + 0.0f, z + 0.0f);
                     world.Spawn(entity);
                     break;
-                case 6:    
+                case 6:    // Place Gras Dirt block
                     entity.tag = "grass_block";
                     entity.albedo = &grassBlockTexture;
                     entity.specular = &textureSpecular;
@@ -240,6 +261,21 @@ int main(int argc, char* argv[])
                         }
 
                     }
+                    break;
+                case 7:
+                    entity.tag = "fire";
+                    entity.albedo = &fireTexture1;
+                    entity.animationTextures = std::deque<Canis::GLTexture>();
+                    entity.animationTextures.push_front(fireTexture2);
+                    entity.animationTextures.push_front(fireTexture3);
+                    entity.animationTextures.push_front(fireTexture4);
+                    entity.animationTextures.push_front(fireTexture1);
+                    entity.animationSpeed = 0.5f;
+                    entity.specular = &textureSpecular;
+                    entity.model = &fireModel;
+                    entity.shader = &fireShader;
+                    entity.transform.position = vec3(x + 0.0f, y + 0.0f, z + 0.0f);
+                    world.Spawn(entity);
                     break;
                 default:
                     break;
@@ -341,13 +377,13 @@ void SpawnLights(Canis::World &_world)
     pointLight.ambient = vec3(0.5f);
     _world.SpawnPointLight(pointLight);
 
-    pointLight.position = vec3(1.0f,5.0f, 1.0f);
+    pointLight.position = vec3(5.0f,7.0f, 13.0f);
     _world.SpawnPointLight(pointLight);
 
-    pointLight.position = vec3(2.0f);
+    pointLight.position = vec3(13.0f, 8.0f, 7.0f);
     _world.SpawnPointLight(pointLight);
 
-    pointLight.position = vec3(2.0f);
+    pointLight.position = vec3(5.0f, 6.0f, 4.0f);
     _world.SpawnPointLight(pointLight);
 
     
