@@ -162,6 +162,28 @@ int main(int argc, char* argv[])
     flowerShader.SetBool("WIND", true);
     flowerShader.SetFloat("WINDEFFECT", 0.2);
     flowerShader.UnUse();
+    
+    Canis::Shader dirtShader;
+    dirtShader.Compile("assets/shaders/hello_shader.vs", "assets/shaders/hello_shader.fs");
+    dirtShader.AddAttribute("aPosition");
+    dirtShader.Link();
+    dirtShader.Use();
+    dirtShader.SetInt("MATERIAL.diffuse", 0);
+    dirtShader.SetInt("MATERIAL.specular", 1);
+    dirtShader.SetFloat("MATERIAL.shininess", 64);
+    dirtShader.SetBool("WIND", false);
+    dirtShader.UnUse();
+    
+    Canis::Shader cobblestoneShader;
+    cobblestoneShader.Compile("assets/shaders/hello_shader.vs", "assets/shaders/hello_shader.fs");
+    cobblestoneShader.AddAttribute("aPosition");
+    cobblestoneShader.Link();
+    cobblestoneShader.Use();
+    cobblestoneShader.SetInt("MATERIAL.diffuse", 0);
+    cobblestoneShader.SetInt("MATERIAL.specular", 1);
+    cobblestoneShader.SetFloat("MATERIAL.shininess", 64);
+    cobblestoneShader.SetBool("WIND", false);
+    cobblestoneShader.UnUse();
 
     /// Load Image
     Canis::GLTexture glassTexture = Canis::LoadImageGL("assets/textures/glass.png", true);
@@ -176,6 +198,8 @@ int main(int argc, char* argv[])
     Canis::GLTexture fireTexture2 = Canis::LoadImageGL("assets/textures/fire_textures/fire_2.png", true);
     Canis::GLTexture fireTexture3 = Canis::LoadImageGL("assets/textures/fire_textures/fire_3.png", true);
     Canis::GLTexture fireTexture4 = Canis::LoadImageGL("assets/textures/fire_textures/fire_4.png", true);
+    Canis::GLTexture dirtTexture = Canis::LoadImageGL("assets/textures/dirt.png", true);
+    Canis::GLTexture cobblestoneTexture = Canis::LoadImageGL("assets/textures/cobblestone.png", true);
     /// End of Image Loading
 
     /// Load Models
@@ -197,7 +221,7 @@ int main(int argc, char* argv[])
             {
                 Canis::Entity entity;
                 entity.active = true;
-
+ 
                 switch (map[y][x][z])
                 {
                 case 1: // places a glass block
@@ -298,6 +322,24 @@ int main(int argc, char* argv[])
                     entity.specular = &textureSpecular;
                     entity.model = &fireModel;
                     entity.shader = &fireShader;
+                    entity.transform.position = vec3(x + 0.0f, y + 0.0f, z + 0.0f);
+                    world.Spawn(entity);
+                    break;
+                case 8:     // dirt block
+                    entity.tag = "dirt";
+                    entity.albedo = &dirtTexture;
+                    entity.specular = &textureSpecular;
+                    entity.model = &cubeModel;
+                    entity.shader = &dirtShader;
+                    entity.transform.position = vec3(x + 0.0f, y + 0.0f, z + 0.0f);
+                    world.Spawn(entity);
+                    break;
+                case 9:     // Cobblestone
+                    entity.tag = "cobblestone";
+                    entity.albedo = &cobblestoneTexture;
+                    entity.specular = &textureSpecular;
+                    entity.model = &cubeModel;
+                    entity.shader = &cobblestoneShader;
                     entity.transform.position = vec3(x + 0.0f, y + 0.0f, z + 0.0f);
                     world.Spawn(entity);
                     break;
