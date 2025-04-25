@@ -431,26 +431,33 @@ void SpawnLights(Canis::World &_world)
     pointLight.linear = 0.09f;
     pointLight.quadratic = 0.032f;
 
-    _world.SpawnPointLight(pointLight);
+    //_world.SpawnPointLight(pointLight);
 
     pointLight.position = vec3(-2.0f, -2.0f, -1.0f);
     _world.SpawnPointLight(pointLight);
         
-    pointLight.position = vec3(-2.0f);
+
+    //light right of house door
+    pointLight.position = vec3(5.0f, 6.0f, 19.0f);
+  
     _world.SpawnPointLight(pointLight);
 
-    pointLight.position = vec3(10.0f,4.0f,8.0f);
+    //light right of house door
+    pointLight.position = vec3(5.0f, 5.0f, 7.0f);
+
+    _world.SpawnPointLight(pointLight);
+
+    //light inside house
+    pointLight.position = vec3(14.0f, 5.0f, 10.0f);
+    pointLight.ambient = vec3(0.08f);
+    _world.SpawnPointLight(pointLight);
+
+    pointLight.position = vec3(14.0f, 5.0f, 3.0f);
+    pointLight.ambient = vec3(0.2f);
+    _world.SpawnPointLight(pointLight);
+
+    pointLight.position = vec3(5.0f, 5.0f, 7.0f);
     pointLight.ambient = vec3(0.5f);
     _world.SpawnPointLight(pointLight);
-
-    pointLight.position = vec3(5.0f,7.0f, 13.0f);
-    _world.SpawnPointLight(pointLight);
-
-    pointLight.position = vec3(13.0f, 8.0f, 7.0f);
-    _world.SpawnPointLight(pointLight);
-
-    pointLight.position = vec3(5.0f, 6.0f, 4.0f);
-    _world.SpawnPointLight(pointLight);
-
     
 }
