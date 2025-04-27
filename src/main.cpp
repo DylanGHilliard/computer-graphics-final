@@ -1,5 +1,6 @@
 #ifdef _WIN32
 #include <windows.h>
+#include <SDL_main.h>
 #endif
 
 #include <glm/glm.hpp>
