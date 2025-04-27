@@ -175,6 +175,14 @@ namespace Canis
 
         for (int i = 0; i < m_pointLights.size(); i++)
         {
+            if(m_pointLights[i].flicker)
+            {
+                float time = SDL_GetTicks() / 1000.0f;
+                float noise = (rand() % 100) / 500.0f; // Reduced random range for subtler effect
+                float flicker = 0.4f + 0.2 * sin(time * 15.0f) + noise; // Base intensity + sine wave + noise
+                m_pointLights[i].diffuse = vec3(flicker, flicker * 0.6f, flicker * 0.0f);
+                m_pointLights[i].specular = vec3(flicker * 1.2f, flicker * 0.7f, flicker * 0.1f);
+            }
             _shader.SetVec3("POINTLIGHTS[" + std::to_string(i) + "].position", m_pointLights[i].position);
             _shader.SetVec3("POINTLIGHTS[" + std::to_string(i) + "].ambient", m_pointLights[i].ambient);
             _shader.SetVec3("POINTLIGHTS[" + std::to_string(i) + "].diffuse", m_pointLights[i].diffuse);

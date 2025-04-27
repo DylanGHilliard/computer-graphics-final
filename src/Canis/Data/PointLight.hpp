@@ -11,6 +11,7 @@ namespace Canis
         glm::vec3 diffuse;
         glm::vec3 specular;
 
+        bool flicker;
         float constant;
         float linear;
         float quadratic;

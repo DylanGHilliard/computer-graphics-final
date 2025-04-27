@@ -432,6 +432,7 @@ void SpawnLights(Canis::World &_world)
     pointLight.constant = 1.0f;
     pointLight.linear = 0.09f;
     pointLight.quadratic = 0.032f;
+    pointLight.flicker = false;
 
     //_world.SpawnPointLight(pointLight);
 
@@ -449,17 +450,12 @@ void SpawnLights(Canis::World &_world)
 
     _world.SpawnPointLight(pointLight);
 
-    //light inside house
-    pointLight.position = vec3(14.0f, 5.0f, 10.0f);
-    pointLight.ambient = vec3(0.08f);
-    _world.SpawnPointLight(pointLight);
+\
 
-    pointLight.position = vec3(14.0f, 5.0f, 3.0f);
-    pointLight.ambient = vec3(0.2f);
-    _world.SpawnPointLight(pointLight);
-
-    pointLight.position = vec3(5.0f, 5.0f, 7.0f);
-    pointLight.ambient = vec3(0.2f);
+    // fire light
+    pointLight.position = vec3(19.0f, 1.0f, 13.0f);
+    pointLight.ambient = vec3(0.2f, 0.1f, 0.01f);
+    pointLight.flicker = true;
     _world.SpawnPointLight(pointLight);
     
 }
