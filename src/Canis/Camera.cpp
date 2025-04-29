@@ -42,6 +42,17 @@ namespace Canis
             Position -= Right * velocity;
         if (direction == RIGHT)
             Position += Right * velocity;
+        switch(direction)
+        {
+            case UP:
+                Position += WorldUp * velocity;
+                break;
+            case DOWN:
+                Position -= WorldUp * velocity;
+                break;
+            default:
+                break;
+        }
     }
 
     void Camera::ProcessMouseMovement(float xoffset, float yoffset, bool constrainPitch)

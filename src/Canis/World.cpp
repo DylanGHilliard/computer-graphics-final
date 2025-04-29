@@ -175,11 +175,13 @@ namespace Canis
 
         for (int i = 0; i < m_pointLights.size(); i++)
         {
+            // Flicker For Fire point lights
             if(m_pointLights[i].flicker)
             {
                 float time = SDL_GetTicks() / 1000.0f;
                 float noise = (rand() % 100) / 500.0f; // Reduced random range for subtler effect
                 float flicker = 0.4f + 0.2 * sin(time * 15.0f) + noise; // Base intensity + sine wave + noise
+                m_pointLights[i].ambient = vec3(flicker * 0.2f, flicker * 0.1f, 0.0f);
                 m_pointLights[i].diffuse = vec3(flicker, flicker * 0.6f, flicker * 0.0f);
                 m_pointLights[i].specular = vec3(flicker * 1.2f, flicker * 0.7f, flicker * 0.1f);
             }
@@ -207,8 +209,16 @@ namespace Canis
         if (m_inputManager->GetKey(SDL_SCANCODE_D))
             m_camera.ProcessKeyboard(Canis::Camera_Movement::RIGHT, _deltaTime);
 
+        if (m_inputManager->GetKey(SDL_SCANCODE_Q))
+            m_camera.ProcessKeyboard(Canis::Camera_Movement::UP, _deltaTime);
+
+        if (m_inputManager->GetKey(SDL_SCANCODE_E))
+            m_camera.ProcessKeyboard(Canis::Camera_Movement::DOWN, _deltaTime);
+
         if (m_window->GetMouseLock())
             m_camera.ProcessMouseMovement(m_inputManager->mouseRel.x, -m_inputManager->mouseRel.y, true);
+        
+        
 
         if (m_inputManager->JustPressedKey(SDLK_ESCAPE))
             m_window->MouseLock(!m_window->GetMouseLock());

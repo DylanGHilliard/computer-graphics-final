@@ -451,7 +451,7 @@ void SpawnLights(Canis::World &_world)
 
     _world.SpawnPointLight(pointLight);
 
-\
+
 
     // fire light
     pointLight.position = vec3(19.0f, 1.0f, 13.0f);
