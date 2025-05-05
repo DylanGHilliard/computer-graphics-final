@@ -34,6 +34,10 @@ struct FireAnimation
     sampler2D fireTexture2;
     sampler2D fireTexture3;
     sampler2D fireTexture4;
+    sampler2D fireTexture5;
+    sampler2D fireTexture6;
+    sampler2D fireTexture7;
+    sampler2D fireTexture8;
 
 
 };
@@ -58,7 +62,7 @@ vec3 CalculatePointLight(PointLight _pointLight);
 
 void main() {
 	// base color
-    float time = mod(TIME * ANIMATION_SPEED, 4.0);
+    float time = mod(TIME * ANIMATION_SPEED, 8.0);
     int currentFrame = int(floor(time));
     vec4 fireTexture;
     switch(currentFrame){
@@ -73,6 +77,18 @@ void main() {
             break;
         case 3:
             fireTexture = texture(FIREANIMATION.fireTexture4, fragmentUV);
+            break;
+        case 4:
+            fireTexture = texture(FIREANIMATION.fireTexture5, fragmentUV);
+            break;
+        case 5:
+            fireTexture = texture(FIREANIMATION.fireTexture6, fragmentUV);
+            break;
+        case 6:
+            fireTexture = texture(FIREANIMATION.fireTexture7, fragmentUV);
+            break;
+        case 7:
+            fireTexture = texture(FIREANIMATION.fireTexture8, fragmentUV);
             break;
         default:
             fireTexture = texture(FIREANIMATION.fireTexture1, fragmentUV);

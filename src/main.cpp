@@ -98,7 +98,7 @@ int main(int argc, char* argv[])
     brickShader.Use();
     brickShader.SetInt("MATERIAL.diffuse", 0);
     brickShader.SetInt("MATERIAL.specular", 1);
-    brickShader.SetFloat("MATERIAL.shininess", 32);
+    brickShader.SetFloat("MATERIAL.shininess", 16);
     brickShader.SetBool("WIND", false);
     brickShader.UnUse();
     
@@ -119,7 +119,7 @@ int main(int argc, char* argv[])
     plankShader.Link();
     plankShader.Use();
     plankShader.SetInt("MATERIAL.diffuse", 0);
-    plankShader.SetInt("MATERIAL.specular", 1);
+    plankShader.SetInt("MATERIAL.specular", 0);
     plankShader.SetFloat("MATERIAL.shininess", 64);
     plankShader.SetBool("WIND", false);
     plankShader.UnUse();
@@ -142,13 +142,17 @@ int main(int argc, char* argv[])
     fireShader.Use();
     fireShader.SetInt("MATERIAL.diffuse", 0);
     fireShader.SetInt("MATERIAL.specular", 1);
-    fireShader.SetFloat("MATERIAL.shininess", 64);
+    fireShader.SetFloat("MATERIAL.shininess", 16);
     fireShader.SetBool("WIND", false);
-    fireShader.SetFloat("ANIMATION_SPEED", 2.0f);
+    fireShader.SetFloat("ANIMATION_SPEED", 8.0f); // Amoount of textures changes of the animation per second
     fireShader.SetInt("FIREANIMATION.fireTexture1", 2);
     fireShader.SetInt("FIREANIMATION.fireTexture2", 3);
     fireShader.SetInt("FIREANIMATION.fireTexture3", 4);
     fireShader.SetInt("FIREANIMATION.fireTexture4", 5);
+    fireShader.SetInt("FIREANIMATION.fireTexture5", 6);
+    fireShader.SetInt("FIREANIMATION.fireTexture6", 7);
+    fireShader.SetInt("FIREANIMATION.fireTexture7", 8);
+    fireShader.SetInt("FIREANIMATION.fireTexture8", 9);
     fireShader.UnUse();
 
     
@@ -159,7 +163,7 @@ int main(int argc, char* argv[])
     flowerShader.Use();
     flowerShader.SetInt("MATERIAL.diffuse", 0);
     flowerShader.SetInt("MATERIAL.specular", 1);
-    flowerShader.SetFloat("MATERIAL.shininess", 64);
+    flowerShader.SetFloat("MATERIAL.shininess", 1);
     flowerShader.SetBool("WIND", true);
     flowerShader.SetFloat("WINDEFFECT", 0.2);
     flowerShader.UnUse();
@@ -171,7 +175,7 @@ int main(int argc, char* argv[])
     dirtShader.Use();
     dirtShader.SetInt("MATERIAL.diffuse", 0);
     dirtShader.SetInt("MATERIAL.specular", 1);
-    dirtShader.SetFloat("MATERIAL.shininess", 64);
+    dirtShader.SetFloat("MATERIAL.shininess", 0);
     dirtShader.SetBool("WIND", false);
     dirtShader.UnUse();
     
@@ -182,7 +186,7 @@ int main(int argc, char* argv[])
     cobblestoneShader.Use();
     cobblestoneShader.SetInt("MATERIAL.diffuse", 0);
     cobblestoneShader.SetInt("MATERIAL.specular", 1);
-    cobblestoneShader.SetFloat("MATERIAL.shininess", 64);
+    cobblestoneShader.SetFloat("MATERIAL.shininess", 16);
     cobblestoneShader.SetBool("WIND", false);
     cobblestoneShader.UnUse();
 
@@ -199,6 +203,10 @@ int main(int argc, char* argv[])
     Canis::GLTexture fireTexture2 = Canis::LoadImageGL("assets/textures/fire_textures/fire_2.png", true);
     Canis::GLTexture fireTexture3 = Canis::LoadImageGL("assets/textures/fire_textures/fire_3.png", true);
     Canis::GLTexture fireTexture4 = Canis::LoadImageGL("assets/textures/fire_textures/fire_4.png", true);
+    Canis::GLTexture fireTexture5 = Canis::LoadImageGL("assets/textures/fire_textures/fire_5.png", true);
+    Canis::GLTexture fireTexture6 = Canis::LoadImageGL("assets/textures/fire_textures/fire_6.png", true);
+    Canis::GLTexture fireTexture7 = Canis::LoadImageGL("assets/textures/fire_textures/fire_7.png", true);
+    Canis::GLTexture fireTexture8 = Canis::LoadImageGL("assets/textures/fire_textures/fire_8.png", true);
     Canis::GLTexture dirtTexture = Canis::LoadImageGL("assets/textures/dirt.png", true);
     Canis::GLTexture cobblestoneTexture = Canis::LoadImageGL("assets/textures/cobblestone.png", true);
     /// End of Image Loading
@@ -318,6 +326,10 @@ int main(int argc, char* argv[])
                     entity.animationTextures.push_front(fireTexture2);
                     entity.animationTextures.push_front(fireTexture3);
                     entity.animationTextures.push_front(fireTexture4);
+                    entity.animationTextures.push_front(fireTexture5);
+                    entity.animationTextures.push_front(fireTexture6);
+                    entity.animationTextures.push_front(fireTexture7);
+                    entity.animationTextures.push_front(fireTexture8);
                     entity.animationTextures.push_front(fireTexture1);
                     entity.animationSpeed = 0.5f;
                     entity.specular = &textureSpecular;
