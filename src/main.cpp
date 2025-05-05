@@ -433,8 +433,8 @@ void LoadMap(std::string _path)
 void SpawnLights(Canis::World &_world)
 {
     Canis::DirectionalLight directionalLight;
-    directionalLight.ambient = vec3(0.2f, 0.2f, 0.2f);
-    directionalLight.diffuse = vec3(0.5f);
+    directionalLight.ambient = vec3(0.1f, 0.1f, 0.1f);
+    directionalLight.diffuse = vec3(0.6f);
     _world.SpawnDirectionalLight(directionalLight);
 
     Canis::PointLight pointLight;
